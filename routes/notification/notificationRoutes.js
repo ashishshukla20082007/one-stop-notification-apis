@@ -6,9 +6,10 @@ const {
   saveInAppMessage,
   getInAppMessages
 } = require('../../controllers/notification/notificationController');
+const { validateTokenHandler } = require('../../middleware/validateTokenHandler');
 
 //router.use(express.json());
-
+router.use(validateTokenHandler);
 router.post('/email', queueEmailNotification);
 router.post('/sms', queueSMSNotification);
 router.post('/in-app', saveInAppMessage);
