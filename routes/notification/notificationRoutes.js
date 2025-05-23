@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const {
-  sendEmail,
-  sendSMS,
+  queueEmailNotification,
+  queueSMSNotification,
   saveInAppMessage,
   getInAppMessages
 } = require('../../controllers/notification/notificationController');
 
 //router.use(express.json());
 
-router.post('/email', sendEmail);
-router.post('/sms', sendSMS);
+router.post('/email', queueEmailNotification);
+router.post('/sms', queueSMSNotification);
 router.post('/in-app', saveInAppMessage);
 router.get('/in-app/:userId', getInAppMessages);
 

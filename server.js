@@ -4,10 +4,14 @@ const notificationRoutes = require('./routes/notification/notificationRoutes');
 require('dotenv').config();
 const connectDB = require('./config/dbConnection');
 const errorHandler = require('./middleware/errorHandler');
+const { createQueues } = require('./queue/notificationQueue');
 
 const app = express();
 
 connectDB(); // Connect to MongoDB
+
+// Initialize Queues
+createQueues();
 
 app.use(express.json());
 // Routes

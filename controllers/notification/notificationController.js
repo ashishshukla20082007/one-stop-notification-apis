@@ -1,6 +1,33 @@
 const Notification = require('../../models/notification/notificationModel');
 const { sendEmailNotification } = require('../../services/mail/emailService');
 const { sendSMSNotification } = require('../../services/sms/smsService');
+const { emailQueue, smsQueue } = require('../../queue/notificationQueue');
+
+//queue email notification
+const queueEmailNotification = async (req, res) => {
+  const { userId, to, subject, text } = req.body;
+  console.log('queueEmailNotification', userId, to, subject, text);
+
+  try {
+    await emailQueue.add({ userId, to, subject, text });
+    res.status(200).json({ message: 'Email queued' });
+  } catch (err) {    
+    res.status(500);
+    throw new Error(err.message);
+  }
+
+};
+
+//queue sms notification
+const queueSMSNotification = async (req, res) => {
+  const { userId, to, message } = req.body;
+  try {
+    await smsQueue.add({ userId, to, message });
+    res.status(200).json({ message: 'SMS queued' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
 //send email
 const sendEmail = async (req, res) => {  
@@ -64,4 +91,4 @@ const getInAppMessages = async (req, res) => {
   }
 };
 
-module.exports = { sendEmail, sendSMS, saveInAppMessage, getInAppMessages };
+module.exports = {queueEmailNotification, queueSMSNotification, sendEmail, sendSMS, saveInAppMessage, getInAppMessages };
