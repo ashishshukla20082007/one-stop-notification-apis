@@ -5,9 +5,9 @@ const { emailQueue, smsQueue } = require('../../queue/notificationQueue');
 
 //queue email notification
 const queueEmailNotification = async (req, res) => {
-  const { to, subject, text } = req.body;
+  const { userId, to, subject, text } = req.body;
   //console.log('queueEmailNotification', userId, to, subject, text);
-  const userId = req.user.id;
+  //const userId = req.user.id;
   if(!userId){
     res.status(401);
     throw new Error("Not authorized, no user id");
